@@ -45,34 +45,40 @@
 * **Суперюзер Django** должен всегда обладать правами администратора, пользователя с правами admin. Даже если изменить пользовательскую роль суперюзера — это не лишит его прав администратора. Суперюзер — всегда администратор, но администратор — не обязательно суперюзер.
 
 
-## Установка
+## Запуск Docker контейнера
 
-* Клонировать репозиторий и перейти в него в командной строке:
+* Клонируйте репозиторий:
 ```
-git clone https://github.com/kr-aleksey/api_yamdb
-```
-
-* Создать и активировать виртуальное окружение:
-```
-python3 -m venv env
-source env/bin/activate
+git clone https://github.com/kr-aleksey/infra_sp2.git
 ```
 
-* Установить зависимости из файла requirements.txt:
+* Перейдите в папку infra:
 ```
-python3 -m pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-* Выполнить миграции:
-```
-python3 manage.py migrate
+cd infra
 ```
 
-* Запустить проект:
+* Запустите контейнеры:
 ```
-python3 manage.py runserver
+sudo docker-compose up
 ```
+
+* Выполните миграции:
+```
+sudo docker-compose exec web python3 manage.py migrate
+```
+
+* Соберите статические файлы:
+```
+sudo docker-compose exec web python manage.py collectstatic --no-input
+```
+
+* Создайте суперпользователя:
+```
+sudo docker-compose exec web python manage.py createsuperuser
+```
+
+* Теперь админка доступна по адресу http://127.0.0.1/admin/
+
 
 
 ## Некоторые примеры запросов к API.
